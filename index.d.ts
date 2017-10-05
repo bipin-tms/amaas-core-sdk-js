@@ -66,7 +66,7 @@ declare module '@amaas/amaas-core-sdk-js' {
     businessUnit?: string
     description?: string
     positions?: any[]
-    references?: any
+    reference?: string
     createdBy?: string
     updatedBy?: string
     createdTime?: string
@@ -1218,7 +1218,7 @@ declare module '@amaas/amaas-core-sdk-js' {
       businessUnit?: string
       description?: string
       positions?: any[]
-      references?: any
+      reference?: string
       createdBy?: string
       updatedBy?: string
       createdTime?: string

@@ -3575,7 +3575,7 @@ Construct a new Book object
 | [params.businessUnit] | <code>string</code> |  | A business unit to associate with the Book (e.g. Emerging Markets, Equities) |
 | [params.description] | <code>string</code> |  | Description of the book |
 | [params.positions] | <code>Array</code> |  | Array of objects [{asset_id: string, quantity: number}] |
-| [params.references] | <code>object</code> |  | References for the Book (e.g. for cost centre or broker account reference) |
+| [params.reference] | <code>object</code> |  | Reference for the Book |
 | [params.createdBy] | <code>string</code> |  | ID of the user that created this object (required if creating a new Book) |
 | [params.updatedBy] | <code>string</code> |  | ID of the user that updated this object (use if amending existing Book) |
 | [params.createdTime] | <code>date</code> |  | Time that the Book was created (required if creating new Book) |
