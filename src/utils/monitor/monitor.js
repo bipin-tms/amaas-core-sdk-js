@@ -296,10 +296,10 @@ export function retrieveActivities({ AMId }, callback) {
     AMId
   }
   let promise = retrieveData(params).then(result => {
-    if (Array.isArray(result.data)) {
-      result = result.data.map(activity => _parseActivity(activity))
+    if (Array.isArray(result)) {
+      result = result.map(activity => _parseActivity(activity))
     } else {
-      result = _parseActivity(result.data)
+      result = _parseActivity(result)
     }
     if (typeof callback === 'function') {
       callback(null, result)

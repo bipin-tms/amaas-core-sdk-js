@@ -871,7 +871,7 @@ declare module '@amaas/amaas-core-sdk-js' {
       function retrieveActivities(
         { AMId }: { AMId: number },
         callback?: Function
-      ): Promise<[monitor.Activity | IMonitorActivity]> | void
+      ): Promise<[monitor.Activity | IMonitorActivity] | monitor.Activity | IMonitorActivity> | void
       function retrieveEvent(
         { AMId, resourceId }: { AMId: number; resourceId?: string },
         callback?: Function
