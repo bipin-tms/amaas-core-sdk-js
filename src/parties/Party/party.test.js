@@ -205,28 +205,54 @@ describe('Party', () => {
   })
   
   describe('phoneNumbers', () => {
-    it('should set phoneNumberPrimary of existing addresses to false when supplying new primary phoneNumbers', () => {
-      const primaryOne = new PhoneNumber({ phoneNumberPrimary: true })
-      const primaryTwo = new PhoneNumber({ phoneNumberPrimary: true })
-      const primaryThree = new PhoneNumber({ phoneNumberPrimary: true })
-      const testParty = new Party({
-        phoneNumbers: { add1: primaryOne, add2: primaryTwo }
-      })
-      testParty.upsertPhoneNumber('add3', primaryThree)
-      expect(testParty.phoneNumber.add1.phoneNumberPrimary).toBeFalsy()
-      expect(testParty.phoneNumber.add2.phoneNumberPrimary).toBeFalsy()
+    it('should set phoneNumbers to empty object if class is instantiated without phoneNumbers', () => {
+      const testParty = new Party({})
+      expect(testParty.phoneNumbers).toEqual({})
     })
-    it('should throw if attempting to add primary phoneNumber without primary phoneNumber', () => {
-      const primaryTwo = new PhoneNumber({ phoneNumberPrimary: false })
+    it('should throw if phone number contains invalid phone number', () => {
+      const testParty = new Party({})
+      const testPhoneNumbers = new PhoneNumber({
+        phoneNumber: 'not an Phone number'
+      })
+      function tester() {
+        testParty.upsertPhoneNumber('test', testPhoneNumbers)
+      }
+      expect(tester).toThrowError('Not a valid Phone Number')
+    })
+    it('should set phoneNumberPrimary of existing phoneNumbers to false when supplying new primary phoneNumber', () => {
+      const primaryOne = new PhoneNumber({
+        phoneNumberPrimary: true,
+        phoneNumber: '(123)456789'
+      })
+      const primaryTwo = new PhoneNumber({
+        phoneNumberPrimary: true,
+        phoneNumber: '(123)456789'
+      })
+      const primaryThree = new PhoneNumber({
+        phoneNumberPrimary: true,
+        phoneNumber: '(123)456789'
+      })
+      const testParty = new Party({
+        phoneNumbers: { e1: primaryOne, e2: primaryTwo }
+      })
+      testParty.upsertPhoneNumber('e3', primaryThree)
+      expect(testParty.phoneNumbers.e1.emailPrimary).toBeFalsy()
+      expect(testParty.phoneNumbers.e2.emailPrimary).toBeFalsy()
+    })
+    it('should throw if attempting to add primary phone number without primary phone number', () => {
+      const primaryTwo = new PhoneNumber({
+        phoneNumberPrimary: false,
+        phoneNumber: '(123)456789'
+      })
       const testParty = new Party({})
       function tester() {
         testParty.upsertPhoneNumber('new', primaryTwo)
       }
       expect(tester).toThrowError(
-        'At least 1 primary phoneNumber must be supplied'
+        'At least 1 primary Phone Number must be supplied'
       )
     })
-    it('should add phoneNumber and preserve existing ones on upsert', () => {
+    it('should add Phone number and preserve existing ones on upsert', () => {
       const primaryOne = new PhoneNumber({
         phoneNumberPrimary: true,
         phoneNumber: '(123)456789'
