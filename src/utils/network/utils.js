@@ -15,6 +15,7 @@ export function poolConfig(stage) {
     case 'staging':
       return userPoolConfig.staging
     case 'prod':
+      return userPoolConfig.prod
     default:
       throw new Error('unavailable config')
   }
