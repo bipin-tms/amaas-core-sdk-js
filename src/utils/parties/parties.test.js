@@ -1,5 +1,5 @@
 import uuid from 'uuid'
-import { retrieve, _parseParty, insert, partialAmend, amend, search, fuzzySearch, deactivate, reactivate } from './parties.js'
+import { retrieve, _parseParty, insert, partialAmend, amend, search, fuzzySearch, fieldsSearch, deactivate, reactivate } from './parties.js'
 import Party from '../../parties/Party/party.js'
 import Individual from '../../parties/Individual/individual'
 import Broker from '../../parties/Broker/broker.js'
@@ -159,6 +159,26 @@ describe('fuzzySearch', () => {
     }
     fuzzySearch(params, (error, result) => {
       expect(network.retrieveData).toHaveBeenCalledWith({ AMaaSClass: 'parties', AMId: 'search', resourceId: 1, query: { q: 'AGMI', fields: ['ticker', 'asset'], includeAdditional: [1, 10], fuzzy: true } })
+      done()
+    })
+  })
+})
+
+describe('fieldsSearch', () => {
+  beforeAll(() => {
+    network.searchData.mockImplementation(() => Promise.resolve({ partyId: 'PARTY1', displayName: 'Test Name' }))
+  })
+  test('with promise', () => {
+    let promise = fieldsSearch({ assetManagerIds: 88 })
+    expect(promise).toBeInstanceOf(Promise)
+  })
+  it('calls searchData with the correct params', done => {
+    const params = {
+      AMId: 88,
+      query: { fields: [ 'displayName', 'description' ] }
+    }
+    fieldsSearch(params, (error, result) => {
+      expect(network.searchData).toHaveBeenCalledWith({ AMaaSClass: 'parties', AMId: 88, query: params.query })
       done()
     })
   })

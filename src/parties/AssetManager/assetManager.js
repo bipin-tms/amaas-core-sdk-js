@@ -44,7 +44,7 @@ class AssetManager extends Company {
     licenseType,
     assetsUnderManagement,
     registrationNumber,
-    yearOfIncoporation,
+    yearOfIncorporation,
     contactNumber,
     addresses={},
     emails={},
@@ -66,11 +66,7 @@ class AssetManager extends Company {
       partyStatus,
       baseCurrency,
       description,
-      licenseNumber,
-      licenseType,
-      assetsUnderManagement,
-      registrationNumber,
-      yearOfIncoporation,
+      yearOfIncorporation,
       contactNumber,
       addresses,
       emails,
@@ -86,6 +82,10 @@ class AssetManager extends Company {
       updatedTime,
       version
     })
+    this.licenseNumber = licenseNumber
+    this.licenseType = licenseType
+    this.assetsUnderManagement = assetsUnderManagement
+    this.registrationNumber = registrationNumber
   }
 }
 
