@@ -65,15 +65,16 @@ Class representing a Reference
 Construct a new Reference instance
 
 
-| Param | Type | Description |
-| --- | --- | --- |
-| params | <code>object</code> | Reference creation options: |
-| params.referenceValue | <code>string</code> | The identifier of this Reference (e.g. transactionId) |
-| [params.createdBy] | <code>string</code> | ID of the user that created the Reference |
-| [params.updatedBy] | <code>string</code> | ID of the user that updated the Reference |
-| [params.createdTime] | <code>date</code> | Time that the Reference was created |
-| [params.updatedTime] | <code>date</code> | Time that the Reference was updated |
-| [params.version] | <code>number</code> | Version number of the Reference |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| params | <code>object</code> |  | Reference creation options: |
+| params.referenceValue | <code>string</code> |  | The identifier of this Reference (e.g. transactionId) |
+| [params.referencePrimary] | <code>boolean</code> | <code>false</code> | Whether the Reference is primary (a parent can only have 1 primary Reference) |
+| [params.createdBy] | <code>string</code> |  | ID of the user that created the Reference |
+| [params.updatedBy] | <code>string</code> |  | ID of the user that updated the Reference |
+| [params.createdTime] | <code>date</code> |  | Time that the Reference was created |
+| [params.updatedTime] | <code>date</code> |  | Time that the Reference was updated |
+| [params.version] | <code>number</code> |  | Version number of the Reference |
 
 <a name="module_core.AMaaSModel"></a>
 
@@ -123,6 +124,7 @@ API Methods. These methods enable communication with the AMaaS Database. All met
     * [.Assets](#module_api.Assets) : <code>object</code>
         * [.retrieve(params, [callback])](#module_api.Assets.retrieve) ⇒ <code>Promise</code> \| <code>null</code>
         * [.insert(params, [callback])](#module_api.Assets.insert) ⇒ <code>Promise</code> \| <code>null</code>
+        * [.upsert(params, [callback])](#module_api.Assets.upsert) ⇒ <code>Promise</code> \| <code>null</code>
         * [.amend(params, [callback])](#module_api.Assets.amend) ⇒ <code>Promise</code> \| <code>null</code>
         * [.partialAmend(params, [callback])](#module_api.Assets.partialAmend) ⇒ <code>Promise</code> \| <code>null</code>
         * [.search(params, callback)](#module_api.Assets.search) ⇒ <code>Promise</code> \| <code>null</code>
@@ -130,6 +132,7 @@ API Methods. These methods enable communication with the AMaaS Database. All met
         * [.fieldsSearch(params, callback)](#module_api.Assets.fieldsSearch) ⇒ <code>Promise</code> \| <code>null</code>
         * [.deactivate(params, [callback])](#module_api.Assets.deactivate) ⇒ <code>Promise</code> \| <code>null</code>
         * [.reactivate(params, [callback])](#module_api.Assets.reactivate) ⇒ <code>Promise</code> \| <code>null</code>
+        * [.getAssetConfig(params, [callback])](#module_api.Assets.getAssetConfig) ⇒ <code>Promise</code> \| <code>null</code>
     * [.Books](#module_api.Books) : <code>object</code>
         * [.retrieve(params, [callback])](#module_api.Books.retrieve) ⇒ <code>Promise</code> \| <code>null</code>
         * [.search(params, [callback])](#module_api.Books.search) ⇒ <code>Promise</code> \| <code>null</code>
@@ -163,6 +166,7 @@ API Methods. These methods enable communication with the AMaaS Database. All met
         * [.retrieveEvent(params, [callback])](#module_api.Monitor.retrieveEvent) ⇒ <code>Promise</code> \| <code>null</code>
         * [.insertEvent(params, [callback])](#module_api.Monitor.insertEvent) ⇒ <code>Promise</code> \| <code>null</code>
         * [.closeEvent(params, callback)](#module_api.Monitor.closeEvent) ⇒ <code>Promise</code> \| <code>null</code>
+        * [.retrieveActivites(params, callback)](#module_api.Monitor.retrieveActivites) ⇒ <code>Promise</code> \| <code>null</code>
     * [.Netting](#module_api.Netting) : <code>object</code>
         * [.retrieve(params, [callback])](#module_api.Netting.retrieve) ⇒ <code>Promise</code> \| <code>null</code>
         * [.send(params, [callback])](#module_api.Netting.send) ⇒ <code>Promise</code> \| <code>null</code>
@@ -427,6 +431,7 @@ Retrieve temporary credentials for pub/sub connection
 * [.Assets](#module_api.Assets) : <code>object</code>
     * [.retrieve(params, [callback])](#module_api.Assets.retrieve) ⇒ <code>Promise</code> \| <code>null</code>
     * [.insert(params, [callback])](#module_api.Assets.insert) ⇒ <code>Promise</code> \| <code>null</code>
+    * [.upsert(params, [callback])](#module_api.Assets.upsert) ⇒ <code>Promise</code> \| <code>null</code>
     * [.amend(params, [callback])](#module_api.Assets.amend) ⇒ <code>Promise</code> \| <code>null</code>
     * [.partialAmend(params, [callback])](#module_api.Assets.partialAmend) ⇒ <code>Promise</code> \| <code>null</code>
     * [.search(params, callback)](#module_api.Assets.search) ⇒ <code>Promise</code> \| <code>null</code>
@@ -434,6 +439,7 @@ Retrieve temporary credentials for pub/sub connection
     * [.fieldsSearch(params, callback)](#module_api.Assets.fieldsSearch) ⇒ <code>Promise</code> \| <code>null</code>
     * [.deactivate(params, [callback])](#module_api.Assets.deactivate) ⇒ <code>Promise</code> \| <code>null</code>
     * [.reactivate(params, [callback])](#module_api.Assets.reactivate) ⇒ <code>Promise</code> \| <code>null</code>
+    * [.getAssetConfig(params, [callback])](#module_api.Assets.getAssetConfig) ⇒ <code>Promise</code> \| <code>null</code>
 
 <a name="module_api.Assets.retrieve"></a>
 
@@ -454,6 +460,21 @@ Retrieve Asset data for specified AMId and assetId
 
 #### Assets.insert(params, [callback]) ⇒ <code>Promise</code> \| <code>null</code>
 Insert a new Asset into the database
+
+**Kind**: static method of [<code>Assets</code>](#module_api.Assets)  
+**Returns**: <code>Promise</code> \| <code>null</code> - If no callback supplied, returns a Promise that resolves with the inserted Asset instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> | object of parameters: |
+| params.AMId | <code>number</code> | Asset Manager ID of the Asset Manager to whom the inserted Asset belongs |
+| params.asset | <code>Asset</code> | Asset instance to insert |
+| [callback] | <code>function</code> | Called with two arguments (error, result) on completion. ` result` is the inserted Asset instance. Omit to return Promise |
+
+<a name="module_api.Assets.upsert"></a>
+
+#### Assets.upsert(params, [callback]) ⇒ <code>Promise</code> \| <code>null</code>
+Upsert a new Asset into the database
 
 **Kind**: static method of [<code>Assets</code>](#module_api.Assets)  
 **Returns**: <code>Promise</code> \| <code>null</code> - If no callback supplied, returns a Promise that resolves with the inserted Asset instance  
@@ -569,6 +590,20 @@ Reactivate a deactivated Asset. This will set the Asset status to 'Active'.
 | params.AMId | <code>string</code> | AMId of the Asset to be deleted |
 | params.resourceId | <code>string</code> | Asset ID of the Asset to be deleted |
 | [callback] | <code>function</code> | Called with two arguments (error, result) on completion. `result` is the reactivated Asset instance. Omit to return Promise |
+
+<a name="module_api.Assets.getAssetConfig"></a>
+
+#### Assets.getAssetConfig(params, [callback]) ⇒ <code>Promise</code> \| <code>null</code>
+Retrieve the asset config (settlement cycle) for a particular asset class.
+
+**Kind**: static method of [<code>Assets</code>](#module_api.Assets)  
+**Returns**: <code>Promise</code> \| <code>null</code> - If no callback supplied, returns a Promise that resolves with the config data.  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> | object of parameters: |
+| params.assetClass | <code>string</code> | Asset class to retrive config for. |
+| [callback] | <code>function</code> | Called with two arguments (error, result) on completion. `result` is the config data. |
 
 <a name="module_api.Books"></a>
 
@@ -945,6 +980,7 @@ Make request and search data
     * [.retrieveEvent(params, [callback])](#module_api.Monitor.retrieveEvent) ⇒ <code>Promise</code> \| <code>null</code>
     * [.insertEvent(params, [callback])](#module_api.Monitor.insertEvent) ⇒ <code>Promise</code> \| <code>null</code>
     * [.closeEvent(params, callback)](#module_api.Monitor.closeEvent) ⇒ <code>Promise</code> \| <code>null</code>
+    * [.retrieveActivites(params, callback)](#module_api.Monitor.retrieveActivites) ⇒ <code>Promise</code> \| <code>null</code>
 
 <a name="module_api.Monitor.retrieveItem"></a>
 
@@ -1059,6 +1095,20 @@ Close a monitor item
 | params.AMId | <code>number</code> | Asset Manager ID of the Event to close |
 | params.resourceId | <code>string</code> | Event ID to close |
 | callback | <code>function</code> | Called with two arguments (error, result) on completion. `result` is the closed Event. Omit to return promise |
+
+<a name="module_api.Monitor.retrieveActivites"></a>
+
+#### Monitor.retrieveActivites(params, callback) ⇒ <code>Promise</code> \| <code>null</code>
+Retrieve a Monitor Activity
+
+**Kind**: static method of [<code>Monitor</code>](#module_api.Monitor)  
+**Returns**: <code>Promise</code> \| <code>null</code> - - If no callback supplied, returns a Promise that resolves with an array of Activities or a single Activity instance  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> | object of parameters: |
+| params.assetManagerId | <code>number</code> | Asset Manager ID of the Activities to be retrieved |
+| callback | <code>function</code> | Called with two arguments (error, result) on completion. `result` is an array of Activities or a single Activity instance. Omit to return Promise |
 
 <a name="module_api.Netting"></a>
 
@@ -2442,6 +2492,7 @@ Construct a new FXForward instance (if there is a fixingDate, it is an NDF)
 | [params.clientId] | <code>string</code> |  | ID of the client |
 | params.countryCodes | <code>object</code> |  | An array of country codes |
 | params.settlementDate | <code>string</code> |  | The date of exchange of ownership |
+| params.maturityDate | <code>string</code> |  | Maturity Date of the FX Forward |
 | [params.fixingDate] | <code>string</code> |  | The date of fixing exchange rate between two currencies |
 | params.forwardRate | <code>string</code> |  | Currency exchange rate |
 | params.underlying | <code>string</code> |  | AssetId of the underlying ForeignExchange |
@@ -2481,6 +2532,7 @@ Construct a new Foreign Exchange instance
 | [params.displayName] | <code>string</code> |  | Display name of the ForeignExchange |
 | params.underlying | <code>string</code> |  | Underlying assetID of the ForeignExchangeBase |
 | params.settlementDate | <code>string</code> |  | Settlement date for the spot pair |
+| params.maturityDate | <code>string</code> |  | Maturity date for the spot pair |
 | params.countryCodes | <code>array</code> |  | Array of country codes __(required)__ |
 | [params.clientId] | <code>string</code> |  | ID of the associated client |
 | [params.comments] | <code>object</code> |  | Object of Comments attached to the Foreign Exchange |
@@ -3523,7 +3575,7 @@ Construct a new Book object
 | [params.businessUnit] | <code>string</code> |  | A business unit to associate with the Book (e.g. Emerging Markets, Equities) |
 | [params.description] | <code>string</code> |  | Description of the book |
 | [params.positions] | <code>Array</code> |  | Array of objects [{asset_id: string, quantity: number}] |
-| [params.references] | <code>object</code> |  | References for the Book (e.g. for cost centre or broker account reference) |
+| [params.reference] | <code>object</code> |  | Reference for the Book |
 | [params.createdBy] | <code>string</code> |  | ID of the user that created this object (required if creating a new Book) |
 | [params.updatedBy] | <code>string</code> |  | ID of the user that updated this object (use if amending existing Book) |
 | [params.createdTime] | <code>date</code> |  | Time that the Book was created (required if creating new Book) |
@@ -3636,10 +3688,39 @@ Classes for the Monitor Service
 
 
 * [monitor](#module_monitor)
+    * [.Activity](#module_monitor.Activity) ⇐ [<code>AMaaSModel</code>](#module_core.AMaaSModel)
+        * [new Activity(params)](#new_module_monitor.Activity_new)
     * [.Event](#module_monitor.Event) ⇐ [<code>AMaaSModel</code>](#module_core.AMaaSModel)
         * [new Event(params)](#new_module_monitor.Event_new)
     * [.Item](#module_monitor.Item) ⇐ [<code>AMaaSModel</code>](#module_core.AMaaSModel)
         * [new Item(params)](#new_module_monitor.Item_new)
+
+<a name="module_monitor.Activity"></a>
+
+### monitor.Activity ⇐ [<code>AMaaSModel</code>](#module_core.AMaaSModel)
+Class representing a Monitor Item
+
+**Kind**: static class of [<code>monitor</code>](#module_monitor)  
+**Extends**: [<code>AMaaSModel</code>](#module_core.AMaaSModel)  
+<a name="new_module_monitor.Activity_new"></a>
+
+#### new Activity(params)
+Construct a new Monitor item
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| params | <code>object</code> | Item creation options: |
+| params.assetManagerId | <code>number</code> | Asset Manager ID of owner |
+| params.clientId | <code>number</code> | Client ID associated with the Monitor Item |
+| params.activityId | <code>string</code> | Activity ID associated with the Monitor Item |
+| params.bookId | <code>string</code> | Book ID associated with the Monitor Item |
+| params.entity | <code>string</code> | entity of Monitor Item |
+| params.activityType | <code>string</code> | activityType of the Monitor Item |
+| params.source | <code>string</code> | source of the Monitor Item |
+| params.message | <code>string</code> | Message attached to the Monitor item |
+| params.referenceId | <code>string</code> | referenceId associated with the Monitor Item |
+| params.referenceType | <code>string</code> | referenceType associated with the Monitor Item |
 
 <a name="module_monitor.Event"></a>
 

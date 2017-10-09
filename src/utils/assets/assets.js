@@ -81,6 +81,43 @@ export function insert({ AMId, asset }, callback) {
 }
 
 /**
+ * Upsert a new Asset into the database
+ * @function upsert
+ * @memberof module:api.Assets
+ * @static
+ * @param {object} params - object of parameters:
+ * @param {number} params.AMId - Asset Manager ID of the Asset Manager to whom the inserted Asset belongs
+ * @param {Asset} params.asset - Asset instance to insert
+ * @param {function} [callback] - Called with two arguments (error, result) on completion. ` result` is the inserted Asset instance. Omit to return Promise
+ * @returns {Promise|null} If no callback supplied, returns a Promise that resolves with the inserted Asset instance
+ */
+export function upsert({ AMId, asset }, callback) {
+  let stringified, data
+  if (asset) {
+    stringified = JSON.stringify(asset)
+    data = JSON.parse(stringified)
+  }
+  const params = {
+    AMaaSClass: 'assets',
+    AMId,
+    data,
+    queryParams: { upsert: true }
+  }
+  let promise = insertData(params).then(result => {
+    result = _parseAsset(result)
+    if (typeof callback === 'function') {
+      callback(null, result)
+    }
+    return result
+  })
+  if (typeof callback !== 'function') {
+    // return promise if callback is not provided
+    return promise
+  }
+  promise.catch(error => callback(error))
+}
+
+/**
  * Amend an existing Asset. WARNING: This makes a HTTP PUT request and will replace the existing Asset with the one passed in
  * @function amend
  * @memberof module:api.Assets
@@ -326,6 +363,33 @@ export function reactivate({ AMId, resourceId }, callback) {
   })
   if (typeof callback !== 'function') {
     // return promise if callback is not provided
+    return promise
+  }
+  promise.catch(error => callback(error))
+}
+
+/**
+ * Retrieve the asset config (settlement cycle) for a particular asset class.
+ * @function getAssetConfig
+ * @memberof module:api.Assets
+ * @static
+ * @param {object} params - object of parameters:
+ * @param {string} params.assetClass - Asset class to retrive config for.
+ * @param {function} [callback] - Called with two arguments (error, result) on completion. `result` is the config data.
+ * @returns {Promise|null} If no callback supplied, returns a Promise that resolves with the config data.
+ */
+export function getAssetConfig({ assetClass }, callback) {
+  const params = {
+    AMaaSClass: 'assetConfig',
+    AMId: assetClass
+  }
+  let promise = retrieveData(params).then(result => {
+    if (typeof callback === 'function') {
+      callback(null, result)
+    }
+    return result
+  })
+  if (typeof callback !== 'function') {
     return promise
   }
   promise.catch(error => callback(error))

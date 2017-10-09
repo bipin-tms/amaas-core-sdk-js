@@ -13,15 +13,12 @@ const mockBookParams = {
   baseCurrency: 'SGD',
   businessUnit: 'testBusinessUnit',
   description: 'test description',
-  references: { BROKER: { referenceValue: 'testBrokerReferenceOnBook' } },
+  reference: 'testBrokerReferenceOnBook',
   positions: []
 }
 
 const mockBookProperties = {
-  ...mockBookParams,
-  references: {
-    BROKER: new Reference({ referenceValue: 'testBrokerReferenceOnBook' })
-  }
+  ...mockBookParams
 }
 
 describe('Book', () => {
@@ -55,5 +52,6 @@ describe('Book', () => {
       const book = new Book(partialParams)
       expect({ ...book }).toEqual(expect.objectContaining(expectedResult))
     })
+
   })
 })
