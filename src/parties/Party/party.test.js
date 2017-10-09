@@ -209,16 +209,7 @@ describe('Party', () => {
       const testParty = new Party({})
       expect(testParty.phoneNumbers).toEqual({})
     })
-    it('should throw if phone number contains invalid phone number', () => {
-      const testParty = new Party({})
-      const testPhoneNumbers = new PhoneNumber({
-        phoneNumber: 'not an Phone number'
-      })
-      function tester() {
-        testParty.upsertPhoneNumber('test', testPhoneNumbers)
-      }
-      expect(tester).toThrowError('Not a valid Phone Number')
-    })
+    
     it('should set phoneNumberPrimary of existing phoneNumbers to false when supplying new primary phoneNumber', () => {
       const primaryOne = new PhoneNumber({
         phoneNumberPrimary: true,
