@@ -222,15 +222,15 @@ describe('Party', () => {
     it('should set phoneNumberPrimary of existing phoneNumbers to false when supplying new primary phoneNumber', () => {
       const primaryOne = new PhoneNumber({
         phoneNumberPrimary: true,
-        phoneNumber: '(123)456789'
+        phoneNumber: '123456789'
       })
       const primaryTwo = new PhoneNumber({
         phoneNumberPrimary: true,
-        phoneNumber: '(123)456789'
+        phoneNumber: '123456789'
       })
       const primaryThree = new PhoneNumber({
         phoneNumberPrimary: true,
-        phoneNumber: '(123)456789'
+        phoneNumber: '123456789'
       })
       const testParty = new Party({
         phoneNumbers: { e1: primaryOne, e2: primaryTwo }
@@ -242,7 +242,7 @@ describe('Party', () => {
     it('should throw if attempting to add primary phone number without primary phone number', () => {
       const primaryTwo = new PhoneNumber({
         phoneNumberPrimary: false,
-        phoneNumber: '(123)456789'
+        phoneNumber: '123456789'
       })
       const testParty = new Party({})
       function tester() {
@@ -255,11 +255,11 @@ describe('Party', () => {
     it('should add Phone number and preserve existing ones on upsert', () => {
       const primaryOne = new PhoneNumber({
         phoneNumberPrimary: true,
-        phoneNumber: '(123)456789'
+        phoneNumber: '123456789'
       })
       const primaryTwo = new PhoneNumber({
         phoneNumberPrimary: false,
-        phoneNumber: '(123)456789'
+        phoneNumber: '123456789'
       })
       const testParty = new Party({ phoneNumbers: { primaryOne } })
       testParty.upsertPhoneNumber('primaryTwo', primaryTwo)
