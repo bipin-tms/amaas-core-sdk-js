@@ -587,8 +587,10 @@ declare module '@amaas/amaas-core-sdk-js' {
       ): Promise<assetManagers.AssetManager> | void
       function searchDomains(
         {
+          AMId,
           query
         }: {
+          AMId: number
           query?: {
             assetManagerIds?: number | number[]
             isPrimary?: boolean
@@ -871,7 +873,11 @@ declare module '@amaas/amaas-core-sdk-js' {
       function retrieveActivities(
         { AMId }: { AMId: number },
         callback?: Function
-      ): Promise<[monitor.Activity | IMonitorActivity] | monitor.Activity | IMonitorActivity> | void
+      ): Promise<
+        | [monitor.Activity | IMonitorActivity]
+        | monitor.Activity
+        | IMonitorActivity
+      > | void
       function retrieveEvent(
         { AMId, resourceId }: { AMId: number; resourceId?: string },
         callback?: Function
