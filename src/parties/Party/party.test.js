@@ -41,6 +41,11 @@ describe('Party', () => {
       const testParty = new Party({})
       expect(testParty.addresses).toEqual({})
     })
+    
+     it('should set Phone number to empty object if class is instantiated without contacts', () => {
+      const testParty = new Party({})
+      expect(testParty.phoneNumbers).toEqual({})
+    })
 
     it('should set references correctly', () => {
       const party = new Party({})
