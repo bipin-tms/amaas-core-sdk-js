@@ -204,6 +204,14 @@ describe('Party', () => {
       const testParty = new Party({})
       expect(testParty.phoneNumbers).toEqual({})
     })
+    it('should throw if Email contains invalid email', () => {
+      const testParty = new Party({})
+      const testEmails = new Email({ email: 'not an email' })
+      function tester() {
+        testParty.upsertEmail('test', testEmails)
+      }
+      expect(tester).toThrowError('Not a valid email')
+    })
     
   })
 })
