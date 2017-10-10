@@ -210,7 +210,7 @@ describe('Party', () => {
         phoneNumber: '(123)456789'
       })
       function tester() {
-        testParty.upsertPhoneNumber('test', testPhoneNumbers)
+        testParty.upsertPhoneNumber(12345678, testPhoneNumbers)
       }
       expect(tester).toThrowError('Not a valid Phone Number')
     })
