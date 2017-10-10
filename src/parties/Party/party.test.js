@@ -212,6 +212,16 @@ describe('Party', () => {
       }
       expect(tester).toThrowError('Not a valid email')
     })
+    it('should throw if phone number contains invalid phone number', () => {
+      const testParty = new Party({})
+      const testPhoneNumbers = new PhoneNumber({
+        phoneNumber: 'not an Phone number'
+      })
+      function tester() {
+        testParty.upsertPhoneNumber('test', testPhoneNumbers)
+      }
+      expect(tester).toThrowError('Not a valid Phone Number')
+    })
     
   })
 })
