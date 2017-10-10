@@ -212,15 +212,25 @@ describe('Party', () => {
       }
       expect(tester).toThrowError('Not a valid email')
     })
-    it('should throw if phone number contains invalid phone number', () => {
-      const testParty = new Party({})
-      const testPhoneNumbers = new PhoneNumber({
-        phoneNumber: 'not an Phone number'
+    it('should set phoneNumberPrimary of existing phoneNumbers to false when supplying new primary phoneNumber', () => {
+      const primaryOne = new PhoneNumber({
+        phoneNumberPrimary: true,
+        phoneNumber: '(123)456789'
       })
-      function tester() {
-        testParty.upsertPhoneNumber('test', testPhoneNumbers)
-      }
-      expect(tester).toThrowError('Not a valid Phone Number')
+      const primaryTwo = new PhoneNumber({
+        phoneNumberPrimary: true,
+        phoneNumber: '(123)456789'
+      })
+      const primaryThree = new PhoneNumber({
+        phoneNumberPrimary: true,
+        phoneNumber: '(123)456789'
+      })
+      const testParty = new Party({
+        phoneNumbers: { e1: primaryOne, e2: primaryTwo }
+      })
+      testParty.upsertPhoneNumber('e3', primaryThree)
+      expect(testParty.phoneNumbers.e1.phoneNumberPrimary).toBeFalsy()
+      expect(testParty.phoneNumbers.e2.phoneNumberPrimary).toBeFalsy()
     })
     
   })
