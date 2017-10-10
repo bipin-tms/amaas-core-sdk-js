@@ -204,15 +204,13 @@ describe('Party', () => {
       const testParty = new Party({})
       expect(testParty.phoneNumbers).toEqual({})
     })
-    it('should throw if phone number contains invalid phone number', () => {
+    it('should throw if Phone Number contains invalid Phone Number', () => {
       const testParty = new Party({})
-      const testPhoneNumbers = new PhoneNumber({
-        phoneNumber: 'not an Phone number'
-      })
+      const testPhoneNumbers = new PhoneNumbers({ PhoneNumber: 'TEST123456' })
       function tester() {
         testParty.upsertPhoneNumber('test', testPhoneNumbers)
       }
-      expect(tester).toThrowError('Not a valid Phone Number')
+      expect(tester).toThrowError('Not a valid Phone number')
     })
     
   })
