@@ -207,7 +207,7 @@ describe('Party', () => {
     it('should throw if phone number contains invalid phone number', () => {
       const testParty = new Party({})
       const testPhoneNumbers = new PhoneNumber({
-        phoneNumber: 'not an Phone number'
+        phoneNumber: '(123)456789'
       })
       function tester() {
         testParty.upsertPhoneNumber('test', testPhoneNumbers)
