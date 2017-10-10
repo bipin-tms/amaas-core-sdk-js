@@ -106,6 +106,7 @@ class Party extends AMaaSModel {
                 PhoneNumbers[type] = new PhoneNumber(
                   Object.assign({}, newPhoneNumbers[type])
                 )
+                this._checkPhoneNumber(newPhoneNumbers[type].phoneNumber)
                 if (newPhoneNumbers[type].phoneNumberPrimary) {
                   primaryPhoneNumber++
                 }
@@ -307,7 +308,16 @@ class Party extends AMaaSModel {
     }
     phoneNumbers[type] = phoneNumber
     this.phoneNumbers = phoneNumbers
-  }  
+  }
+  
+  // Check if input is a valid email string
+  _checkPhoneNumber(phoneNumber) {
+    const regex = new RegExp('^(+d{1,2}s)?(?d{3})?[s.-]d{3}[s.-]d{4}$')
+    if (!regex.test(phoneNumber)) {
+      throw new Error('Not a valid phone number')
+    }
+  }
+  
 }
 
 export default Party
