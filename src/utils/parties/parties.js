@@ -10,6 +10,7 @@ import * as PartyClasses from '../../parties'
 
 import Address from '../../parties/Children/address.js'
 import Email from '../../parties/Children/email.js'
+import PhoneNumber from '../../parties/Children/phoneNumber.js'
 
 /**
  * Retrieve Party data for specified AMId and partyId
