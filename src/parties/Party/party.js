@@ -94,7 +94,7 @@ class Party extends AMaaSModel {
         },
         enumerable: true
       },
-       _phoneNumbers: { writable: true, enumerable: false },
+      _phoneNumbers: { writable: true, enumerable: false },
       phoneNumbers: {
         get: () => this._phoneNumbers,
         set: newPhoneNumbers => {
@@ -103,7 +103,7 @@ class Party extends AMaaSModel {
             let primaryPhoneNumber = 0
             for (let type in newPhoneNumbers) {
               if (newPhoneNumbers.hasOwnProperty(type)) {
-                PhoneNumbers[type] = new PhoneNumber(
+                phoneNumbers[type] = new PhoneNumber(
                   Object.assign({}, newPhoneNumbers[type])
                 )
                 this._checkPhoneNumber(newPhoneNumbers[type].phoneNumber)
@@ -113,9 +113,7 @@ class Party extends AMaaSModel {
               }
             }
             if (primaryPhoneNumber == 0) {
-              throw new Error(
-                'At least 1 primary phone Number must be supplied'
-              )
+              throw new Error('At least 1 primary phoneNumber must be supplied')
             }
             this._phoneNumbers = phoneNumbers
           } else {
@@ -309,15 +307,16 @@ class Party extends AMaaSModel {
     phoneNumbers[type] = phoneNumber
     this.phoneNumbers = phoneNumbers
   }
-  
-  // Check if input is a valid email string
+
+  // Check if input is a valid phoneNumber string
   _checkPhoneNumber(phoneNumber) {
-    const regex = new RegExp('^(+d{1,2}s)?(?d{3})?[s.-]d{3}[s.-]d{4}$')
+    const regex = new RegExp(
+      '^[(]{0,1}[0-9]{3}[)]{0,1}[-s.]{0,1}[0-9]{3}[-s.]{0,1}[0-9]{4}$'
+    )
     if (!regex.test(phoneNumber)) {
-      throw new Error('Not a valid phone number')
+      throw new Error('Not a valid PhoneNumber')
     }
   }
-  
 }
 
 export default Party
