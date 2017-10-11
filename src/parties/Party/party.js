@@ -92,7 +92,7 @@ class Party extends AMaaSModel {
         },
         enumerable: true
       },
-	  _phoneNumbers: { writable: true, enumerable: false },
+      _phoneNumbers: { writable: true, enumerable: false },
       phoneNumbers: {
         get: () => this._phoneNumbers,
         set: newPhoneNumbers => {
@@ -101,18 +101,17 @@ class Party extends AMaaSModel {
             let primaryPhoneNumber = 0
             for (let type in newPhoneNumbers) {
               if (newPhoneNumbers.hasOwnProperty(type)) {
-                PhoneNumbers[type] = new PhoneNumber(
+                phoneNumbers[type] = new PhoneNumber(
                   Object.assign({}, newPhoneNumbers[type])
                 )
+                this._checkPhoneNumber(newPhoneNumbers[type].phoneNumber)
                 if (newPhoneNumbers[type].phoneNumberPrimary) {
                   primaryPhoneNumber++
                 }
               }
             }
             if (primaryPhoneNumber == 0) {
-              throw new Error(
-                'At least 1 primary phone Number must be supplied'
-              )
+              throw new Error('At least 1 primary phoneNumber must be supplied')
             }
             this._phoneNumbers = phoneNumbers
           } else {
@@ -278,22 +277,32 @@ class Party extends AMaaSModel {
   }
 
 
-	/**
-	 * Upsert an Phone Number
-	 * @param {string} type - Type of Phone Number (e.g. 'Work', 'Support')
-	 * @param {PhoneNumbers} phoneNumber - new phoneNumber. Note that the new phoneNumber cannot be primary if a primary phoneNumber already exists. Use this.phoneNumbers setter to replace primary phoneNumbers (??)
-	 */
-	upsertPhoneNumber(type, phoneNumber) {
-	  const phoneNumbers = Object.assign({}, this.phoneNumbers)
-	  if (phoneNumber.phoneNumberPrimary) {
-		for (let ref in phoneNumbers) {
-		  if (phoneNumbers.hasOwnProperty(ref)) {
-			phoneNumbers[ref].phoneNumberPrimary = false
-		  }
-		}
-	  }
-	  phoneNumbers[type] = phoneNumber
-	  this.phoneNumbers = phoneNumbers
-	}
+/**
+ * Upsert an Phone Number
+ * @param {string} type - Type of Phone Number (e.g. 'Work', 'Support')
+ * @param {PhoneNumbers} phoneNumber - new phoneNumber. Note that the new phoneNumber cannot be primary if a primary phoneNumber already exists. Use this.phoneNumbers setter to replace primary phoneNumbers (??)
+ */
+  upsertPhoneNumber(type, phoneNumber) {
+    const phoneNumbers = Object.assign({}, this.phoneNumbers)
+    if (phoneNumber.phoneNumberPrimary) {
+      for (let ref in phoneNumbers) {
+        if (phoneNumbers.hasOwnProperty(ref)) {
+          phoneNumbers[ref].phoneNumberPrimary = false
+        }
+      }
+    }
+    phoneNumbers[type] = phoneNumber
+    this.phoneNumbers = phoneNumbers
+  }
+
+  // Check if input is a valid phoneNumber string
+  _checkPhoneNumber(phoneNumber) {
+    const regex = new RegExp(
+      '^[(]{0,1}[0-9]{3}[)]{0,1}[-s.]{0,1}[0-9]{3}[-s.]{0,1}[0-9]{4}$'
+    )
+    if (!regex.test(phoneNumber)) {
+      throw new Error('Not a valid PhoneNumber')
+    }
+  }
 }
 export default Party
