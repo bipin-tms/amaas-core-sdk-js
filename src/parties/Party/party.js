@@ -85,7 +85,7 @@ class Party extends AMaaSModel {
               }
             }
             if (primaryEmail == 0) {
-              throw new Error('At least 1 primary email must be supplied')
+              throw new Error('Only 1 primary phoneNumber must be supplied')
             }
             this._emails = emails
           } else {
