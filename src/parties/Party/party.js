@@ -106,13 +106,12 @@ class Party extends AMaaSModel {
                 phoneNumbers[type] = new PhoneNumber(
                   Object.assign({}, newPhoneNumbers[type])
                 )
-                this._checkPhoneNumber(newPhoneNumbers[type].phoneNumber)
                 if (newPhoneNumbers[type].phoneNumberPrimary) {
                   primaryPhoneNumber++
                 }
               }
             }
-            if (primaryPhoneNumber == 0) {
+            if (primaryPhoneNumber !== 1) {
               throw new Error('At least 1 primary phoneNumber must be supplied')
             }
             this._phoneNumbers = phoneNumbers
@@ -306,16 +305,6 @@ class Party extends AMaaSModel {
     }
     phoneNumbers[type] = phoneNumber
     this.phoneNumbers = phoneNumbers
-  }
-
-  // Check if input is a valid phoneNumber string
-  _checkPhoneNumber(phoneNumber) {
-    const regex = new RegExp(
-      '^[(]{0,1}[0-9]{3}[)]{0,1}[-s.]{0,1}[0-9]{3}[-s.]{0,1}[0-9]{4}$'
-    )
-    if (!regex.test(phoneNumber)) {
-      throw new Error('Not a valid PhoneNumber')
-    }
   }
 }
 
