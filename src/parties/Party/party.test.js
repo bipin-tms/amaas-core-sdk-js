@@ -234,7 +234,7 @@ describe('Party', () => {
         testParty.upsertPhoneNumber('new', primaryTwo)
       }
       expect(tester).toThrowError(
-        'At least 1 primary phoneNumber must be supplied'
+        'Only 1 primary phoneNumber must be supplied'
       )
     })
     it('should add phoneNumber and preserve existing ones on upsert', () => {
